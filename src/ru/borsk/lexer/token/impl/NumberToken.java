@@ -2,10 +2,10 @@ package ru.borsk.lexer.token.impl;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import ru.borsk.lexer.token.Token;
 import ru.borsk.lexer.token.TokenVisitorBase;
+import ru.borsk.lexer.token.TrustedToken;
 
-public final class NumberToken implements Token {
+public final class NumberToken extends TrustedToken {
   private final @NotNull String number;
 
   @Contract(pure = true)

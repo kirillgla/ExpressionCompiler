@@ -3,10 +3,10 @@ package ru.borsk.lexer.token.impl;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import ru.borsk.common.operator.BinaryOperator;
-import ru.borsk.lexer.token.Token;
 import ru.borsk.lexer.token.TokenVisitorBase;
+import ru.borsk.lexer.token.TrustedToken;
 
-public final class OperatorToken implements Token {
+public final class OperatorToken extends TrustedToken {
   private @NotNull BinaryOperator operator;
 
   @Contract(pure = true)
@@ -26,7 +26,7 @@ public final class OperatorToken implements Token {
   @Override
   public boolean equals(final Object obj) {
     if (!(obj instanceof OperatorToken)) return false;
-    final OperatorToken other = (OperatorToken) obj;
+    final OperatorToken other = (OperatorToken)obj;
     // Reference comparison will do because operators are singletons
     return operator == other.operator;
   }

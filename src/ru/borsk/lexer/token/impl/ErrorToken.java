@@ -25,7 +25,7 @@ public final class ErrorToken implements Token {
   @Override
   public boolean equals(final Object obj) {
     if (!(obj instanceof ErrorToken)) return false;
-    final ErrorToken other = (ErrorToken) obj;
+    final ErrorToken other = (ErrorToken)obj;
     return problem == other.problem;
   }
 }
