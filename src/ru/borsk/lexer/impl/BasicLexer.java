@@ -2,7 +2,7 @@ package ru.borsk.lexer.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import ru.borsk.common.LanguageProcessorBase;
+import ru.borsk.common.processors.LanguageProcessorBase;
 import ru.borsk.common.text.Utils;
 import ru.borsk.lexer.Lexer;
 import ru.borsk.lexer.matcher.Matcher;

@@ -1,13 +1,13 @@
-package ru.borsk.common;
+package ru.borsk.common.processors;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LanguageProcessorBase<T> {
+public abstract class LanguageProcessorBase<T> {
   private final @NotNull List<@NotNull T> elements;
   private int lookaheadIndex;
-  private int savedLookaheadIndex; // TODO: use stack for that
+  private int savedLookaheadIndex;
 
   public LanguageProcessorBase(final @NotNull List<@NotNull T> elements) {
     this.elements = elements;
@@ -32,5 +32,13 @@ public class LanguageProcessorBase<T> {
 
   protected final T getLookahead() {
     return elements.get(lookaheadIndex);
+  }
+
+  protected final int getLookaheadIndex() {
+    return lookaheadIndex;
+  }
+
+  protected final void setLookaheadIndex(final int lookaheadIndex) {
+    this.lookaheadIndex = lookaheadIndex;
   }
 }

@@ -6,12 +6,13 @@ import ru.borsk.common.operator.BinaryOperator;
 import ru.borsk.lexer.token.Token;
 import ru.borsk.lexer.token.TokenVisitor;
 import ru.borsk.lexer.token.ValidToken;
+import ru.borsk.lexer.token.ValidTokenVisitor;
 
 public final class OperatorToken implements Token, ValidToken {
   private @NotNull BinaryOperator operator;
 
   @Contract(pure = true)
-  private @NotNull BinaryOperator getOperator() {
+  public @NotNull BinaryOperator getOperator() {
     return operator;
   }
 
@@ -44,6 +45,11 @@ public final class OperatorToken implements Token, ValidToken {
 
   @Override
   public void visit(final @NotNull TokenVisitor visitor) {
+    visitor.visitOperator(this);
+  }
+
+  @Override
+  public void visitValid(final @NotNull ValidTokenVisitor visitor) {
     visitor.visitOperator(this);
   }
 }

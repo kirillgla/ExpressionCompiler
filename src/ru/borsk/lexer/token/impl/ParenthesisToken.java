@@ -6,6 +6,7 @@ import ru.borsk.common.parenthesis.Parenthesis;
 import ru.borsk.lexer.token.Token;
 import ru.borsk.lexer.token.TokenVisitor;
 import ru.borsk.lexer.token.ValidToken;
+import ru.borsk.lexer.token.ValidTokenVisitor;
 
 public final class ParenthesisToken implements Token, ValidToken {
   private @NotNull Parenthesis parenthesis;
@@ -44,6 +45,11 @@ public final class ParenthesisToken implements Token, ValidToken {
 
   @Override
   public void visit(final @NotNull TokenVisitor visitor) {
+    visitor.visitParenthesis(this);
+  }
+
+  @Override
+  public void visitValid(final @NotNull ValidTokenVisitor visitor) {
     visitor.visitParenthesis(this);
   }
 }
