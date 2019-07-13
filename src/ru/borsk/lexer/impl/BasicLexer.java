@@ -2,6 +2,8 @@ package ru.borsk.lexer.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import ru.borsk.common.LanguageProcessorBase;
+import ru.borsk.common.text.Utils;
 import ru.borsk.lexer.Lexer;
 import ru.borsk.lexer.matcher.Matcher;
 import ru.borsk.lexer.matcher.impl.*;
@@ -10,15 +12,12 @@ import ru.borsk.lexer.token.Token;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class BasicLexer implements Lexer {
+public final class BasicLexer extends LanguageProcessorBase<Character> implements Lexer {
   private final @NotNull Matcher matcher;
-  private final @NotNull String input;
-  private int lookaheadIndex;
 
   public BasicLexer(final @NotNull String input) {
-    this.input = input;
+    super(Utils.asList(input));
     matcher = new CompositeMatcher(createDefaultMatchers());
-    start();
   }
 
   @Override
@@ -40,33 +39,20 @@ public final class BasicLexer implements Lexer {
     return matchers;
   }
 
-  private void advance() {
-    lookaheadIndex += 1;
-  }
-
-  private void start() {
-    lookaheadIndex = -1;
-    advance();
-  }
-
-  private boolean canContinue() {
-    return lookaheadIndex < input.length();
-  }
-
   private @NotNull Token scanNext() {
-    int lastBestMatchLookaheadIndex = lookaheadIndex;
+    saveLookaheadIndex();
     @Nullable Token lastBestMatch = null;
     while (canContinue() && matcher.canMatchLater()) {
-      matcher.consumeChar(input.charAt(lookaheadIndex));
+      matcher.consumeChar(getLookahead());
       advance();
       final @Nullable Token token = matcher.tryProduce();
       if (token != null) {
         lastBestMatch = token;
-        lastBestMatchLookaheadIndex = lookaheadIndex;
+        saveLookaheadIndex();
       }
     }
     matcher.reset();
-    lookaheadIndex = lastBestMatchLookaheadIndex;
+    restoreLookaheadIndex();
     if (lastBestMatch == null) throw new IllegalStateException();
     return lastBestMatch;
   }

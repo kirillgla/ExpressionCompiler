@@ -2,6 +2,7 @@ package ru.borsk.common.text;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.AbstractList;
 import java.util.List;
 
 public final class Utils {
@@ -19,5 +20,19 @@ public final class Utils {
     builder.append(" or ");
     builder.append(strings.get(strings.size() - 1));
     return builder.toString();
+  }
+
+  public static @NotNull List<@NotNull Character> asList(final @NotNull String string) {
+    return new AbstractList<@NotNull Character>() {
+      @Override
+      public Character get(final int index) {
+        return string.charAt(index);
+      }
+
+      @Override
+      public int size() {
+        return string.length();
+      }
+    };
   }
 }
