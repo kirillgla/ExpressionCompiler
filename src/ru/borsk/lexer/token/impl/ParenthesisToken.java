@@ -3,10 +3,11 @@ package ru.borsk.lexer.token.impl;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import ru.borsk.common.parenthesis.Parenthesis;
-import ru.borsk.lexer.token.TokenVisitorBase;
-import ru.borsk.lexer.token.TrustedToken;
+import ru.borsk.lexer.token.Token;
+import ru.borsk.lexer.token.TokenVisitor;
+import ru.borsk.lexer.token.ValidToken;
 
-public final class ParenthesisToken extends TrustedToken {
+public final class ParenthesisToken implements Token, ValidToken {
   private @NotNull Parenthesis parenthesis;
 
   @Contract(pure = true)
@@ -19,8 +20,18 @@ public final class ParenthesisToken extends TrustedToken {
   }
 
   @Override
-  public void visit(final @NotNull TokenVisitorBase visitor) {
-    visitor.visitParenthesis(this);
+  public boolean isValid() {
+    return false;
+  }
+
+  @Override
+  public @NotNull ValidToken toValidToken() {
+    return this;
+  }
+
+  @Override
+  public @NotNull String getPresentation() {
+    return parenthesis.getPresentation();
   }
 
   @Override
@@ -29,5 +40,10 @@ public final class ParenthesisToken extends TrustedToken {
     final ParenthesisToken other = (ParenthesisToken)obj;
     // Reference comparison will do because parentheses are singletons
     return parenthesis == other.parenthesis;
+  }
+
+  @Override
+  public void visit(final @NotNull TokenVisitor visitor) {
+    visitor.visitParenthesis(this);
   }
 }

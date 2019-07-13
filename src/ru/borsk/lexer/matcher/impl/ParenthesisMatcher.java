@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ParenthesisMatcher extends CompositeMatcher {
+public final class ParenthesisMatcher extends CompositeMatcher {
   private static final List<Matcher> Matchers;
 
   static {
