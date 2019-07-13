@@ -21,7 +21,7 @@ public class BasicLexerTest {
   }
 
   @Test
-  public void TestSimpleExpression() {
+  public void testSimpleExpression() {
     final @NotNull List<@NotNull Token> actual = scan("2+2");
     final @NotNull List<@NotNull Token> expected = Arrays.asList(
       new NumberToken("2"),
@@ -31,7 +31,7 @@ public class BasicLexerTest {
   }
 
   @Test
-  public void TestWhitespaces() {
+  public void testWhitespaces() {
     final @NotNull List<@NotNull Token> actual = scan("2 +\t\t\t2*  \f4\r\n/\n2");
     final @NotNull List<@NotNull Token> expected = Arrays.asList(
       new NumberToken("2"),
@@ -50,7 +50,7 @@ public class BasicLexerTest {
   }
 
   @Test
-  public void TestBadTokens() {
+  public void testBadTokens() {
     final @NotNull List<@NotNull Token> actual = scan("2 + {2} = (4)");
     final @NotNull List<@NotNull Token> expected = Arrays.asList(
       new NumberToken("2"),
@@ -71,7 +71,7 @@ public class BasicLexerTest {
   }
 
   @Test
-  public void TestNumbersSeparatedWithWhitespace() {
+  public void testNumbersSeparatedWithWhitespace() {
     final @NotNull List<@NotNull Token> actual = scan("2 + 2 2");
     final @NotNull List<@NotNull Token> expected = Arrays.asList(
       new NumberToken("2"),
@@ -81,6 +81,18 @@ public class BasicLexerTest {
       new NumberToken("2"),
       WhitespaceToken.Instance,
       new NumberToken("2")
+    );
+    Assertions.assertEquals(expected, actual);
+  }
+
+  @Test
+  public void testTooBigNumber() {
+    final @NotNull List<@NotNull Token> actual = scan("2 +9999999999999999999999999");
+    final @NotNull List<@NotNull Token> expected = Arrays.asList(
+      new NumberToken("2"),
+      WhitespaceToken.Instance,
+      new OperatorToken(AdditionOperator.Instance),
+      new NumberToken("9999999999999999999999999")
     );
     Assertions.assertEquals(expected, actual);
   }

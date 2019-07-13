@@ -16,7 +16,7 @@ public final class FilteringLexer implements Lexer {
     this(new BasicLexer(input));
   }
 
-  private FilteringLexer(final @NotNull Lexer lexer) {
+  public FilteringLexer(final @NotNull Lexer lexer) {
     this.lexer = lexer;
   }
 
