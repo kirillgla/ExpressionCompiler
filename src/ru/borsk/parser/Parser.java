@@ -3,72 +3,101 @@ package ru.borsk.parser;
 import org.jetbrains.annotations.NotNull;
 import ru.borsk.common.interfaces.ThrowingProvider;
 import ru.borsk.common.processors.StackLanguageProcessorBase;
-import ru.borsk.lexer.matcher.impl.NumberMatcher;
 import ru.borsk.lexer.token.ValidToken;
 import ru.borsk.lexer.token.impl.OperatorToken;
-import ru.borsk.lexer.token.impl.ValidNumberToken;
-import ru.borsk.parser.matchers.Matcher;
+import ru.borsk.parser.handlers.ParseHandler;
+import ru.borsk.parser.handlers.impl.*;
 import ru.borsk.parser.node.Node;
+import ru.borsk.parser.node.impl.BinaryOperatorNode;
 import ru.borsk.parser.node.impl.NumberNode;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
 
 public final class Parser extends StackLanguageProcessorBase<ValidToken> {
   public Parser(@NotNull final List<@NotNull ValidToken> tokens) {
     super(tokens);
   }
 
-  public @NotNull Node<? extends ValidToken> parse() {
-    throw new UnsupportedOperationException("Not implemented");
+  public @NotNull Node<? extends ValidToken> parse() throws ParseFailureException {
+    return addend();
   }
 
-  private @NotNull Node<? extends ValidToken> addend() {
-
+  private @NotNull Node<? extends ValidToken> addend() throws ParseFailureException {
+    final Node<? extends ValidToken> factor = factor();
+    stackSaveLookaheadIndex();
+    try {
+      final OperatorToken operator = match(AdditiveOperatorParseHandler.Instance);
+      return addend(factor, operator);
+    } catch (ParseFailureException e) {
+      stackRestoreLookaheadIndex();
+      return factor;
+    }
   }
 
-  private @NotNull Node<? extends ValidToken> factor() {
+  private @NotNull Node<? extends ValidToken> addend(
+    final @NotNull Node<? extends ValidToken> node,
+    final @NotNull OperatorToken operator
+  ) throws ParseFailureException {
+    final Node<? extends ValidToken> factor = factor();
+    final BinaryOperatorNode newNode = new BinaryOperatorNode(operator, node, factor);
+    stackSaveLookaheadIndex();
+    try {
+      final OperatorToken newOperator = match(AdditiveOperatorParseHandler.Instance);
+      return addend(newNode, newOperator);
+    } catch (ParseFailureException e) {
+      stackRestoreLookaheadIndex();
+      return newNode;
+    }
+  }
 
+  private @NotNull Node<? extends ValidToken> factor() throws ParseFailureException {
+    final Node<? extends ValidToken> atom = atom();
+    stackSaveLookaheadIndex();
+    try {
+      final OperatorToken operator = match(MultiplicativeOperatorParseHandler.Instance);
+      return factor(atom, operator);
+    } catch (ParseFailureException e) {
+      restoreLookaheadIndex();
+      return atom;
+    }
+  }
+
+  private @NotNull Node<? extends ValidToken> factor(
+    final @NotNull Node<? extends ValidToken> node,
+    final @NotNull OperatorToken operator
+  ) throws ParseFailureException {
+    final Node<? extends ValidToken> atom = atom();
+    final BinaryOperatorNode newNode = new BinaryOperatorNode(operator, node, atom);
+    stackSaveLookaheadIndex();
+    try {
+      final OperatorToken newOperator = match(MultiplicativeOperatorParseHandler.Instance);
+      return factor(newNode, newOperator);
+    } catch (ParseFailureException e) {
+      stackRestoreLookaheadIndex();
+      return newNode;
+    }
   }
 
   private Node<? extends ValidToken> atom() throws ParseFailureException {
     return tryAll(
-//      () -> new NumberNode(match(ValidNumberToken.class)),
-//      () -> {
-//      }
+      () -> new NumberNode(match(ValidNumberParseHandler.Instance)),
+      () -> {
+        match(OpenParenthesisParseHandler.Instance);
+        final Node<? extends ValidToken> result = addend();
+        match(ClosingParenthesisParseHandler.Instance);
+        return result;
+      }
     );
   }
 
-//  @SafeVarargs
-//  private final Node<? extends ValidToken> tryAll(
-//    ThrowingProvider<? extends Node<? extends ValidToken>, ParseFailureException>... providers
-//  ) throws ParseFailureException {
-//    stackSaveLookaheadIndex();
-//    for (final ThrowingProvider<? extends Node<? extends ValidToken>, ParseFailureException> provider : providers) {
-//      try {
-//        final Node<? extends ValidToken> result = provider.provide();
-//        stackPopLookaheadIndex();
-//        return result;
-//      } catch (ParseFailureException e) {
-//        stackRestoreLookaheadIndex();
-//      }
-//    }
-//    throw new ParseFailureException();
-//  }
-
-  @NotNull
   @SafeVarargs
-  private final <TResult> TResult tryAll(@NotNull Matcher<? super ValidToken, TResult>... matchers)
+  private final <TResult> TResult tryAll(ThrowingProvider<TResult, ParseFailureException>... providers)
     throws ParseFailureException {
     stackSaveLookaheadIndex();
-    final @NotNull ValidToken lookahead = getLookahead();
-    for (final @NotNull Matcher<? super ValidToken, TResult> matcher : matchers) {
+    for (final ThrowingProvider<TResult, ParseFailureException> provider : providers) {
       try {
-        final TResult result = matcher.consume(lookahead);
+        final TResult result = provider.provide();
         stackPopLookaheadIndex();
-        advance();
         return result;
       } catch (ParseFailureException e) {
         stackRestoreLookaheadIndex();
@@ -77,17 +106,11 @@ public final class Parser extends StackLanguageProcessorBase<ValidToken> {
     throw new ParseFailureException();
   }
 
-  private <TToken> @NotNull TToken match(Class<TToken> c) throws ParseFailureException {
+  private <TResult> TResult match(final @NotNull ParseHandler<TResult> handler)
+    throws ParseFailureException {
     final @NotNull ValidToken lookahead = getLookahead();
-    if (!c.isInstance(lookahead)) throw new ParseFailureException();
+    final TResult result = handler.consume(lookahead);
     advance();
-    return c.cast(lookahead);
-  }
-
-  private @NotNull ValidToken match(Predicate<ValidToken> predicate) throws ParseFailureException {
-    final @NotNull ValidToken lookahead = getLookahead();
-    if (!predicate.test(lookahead)) throw new ParseFailureException();
-    advance();
-    return lookahead;
+    return result;
   }
 }

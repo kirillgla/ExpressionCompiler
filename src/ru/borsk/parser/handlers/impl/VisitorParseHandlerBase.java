@@ -1,15 +1,13 @@
-package ru.borsk.parser.matchers;
+package ru.borsk.parser.handlers.impl;
 
 import org.jetbrains.annotations.NotNull;
 import ru.borsk.lexer.token.ValidToken;
 import ru.borsk.lexer.token.ValidTokenVisitor;
 import ru.borsk.parser.ParseFailureException;
+import ru.borsk.parser.handlers.ParseHandler;
 
-public abstract class VisitorMatcherBase<TSource extends ValidToken, TResult>
-  extends ValidTokenVisitor
-  implements Matcher<TSource, TResult> {
-
-  protected abstract TResult provideResult() throws ParseFailureException;
+public abstract class VisitorParseHandlerBase<TResult> extends ValidTokenVisitor implements ParseHandler<TResult> {
+  protected abstract @NotNull TResult provideResult() throws ParseFailureException;
 
   @Override
   public final TResult consume(final @NotNull ValidToken token) throws ParseFailureException {

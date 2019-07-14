@@ -1,4 +1,4 @@
-package ru.borsk.parser.matchers.impl;
+package ru.borsk.parser.handlers.impl;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -6,12 +6,16 @@ import ru.borsk.common.parenthesis.ClosingParenthesis;
 import ru.borsk.lexer.token.ValidToken;
 import ru.borsk.lexer.token.impl.ParenthesisToken;
 import ru.borsk.parser.ParseFailureException;
-import ru.borsk.parser.matchers.VisitorMatcherBase;
 
-public final class ClosingParenthesisMatcher<TSource extends ValidToken>
-  extends VisitorMatcherBase<TSource, ParenthesisToken> {
+public final class ClosingParenthesisParseHandler extends VisitorParseHandlerBase<ParenthesisToken> {
+  private ClosingParenthesisParseHandler() {
+  }
+
+  public static final ClosingParenthesisParseHandler Instance = new ClosingParenthesisParseHandler();
+
   private @Nullable ParenthesisToken token;
 
+  @NotNull
   @Override
   protected ParenthesisToken provideResult() throws ParseFailureException {
     if (token == null) throw new ParseFailureException();
