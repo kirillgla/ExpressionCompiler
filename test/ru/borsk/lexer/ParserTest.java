@@ -8,8 +8,11 @@ import ru.borsk.common.operator.impl.AdditionOperator;
 import ru.borsk.common.operator.impl.DivisionOperator;
 import ru.borsk.common.operator.impl.MultiplicationOperator;
 import ru.borsk.common.operator.impl.SubtractionOperator;
+import ru.borsk.common.parenthesis.ClosingParenthesis;
+import ru.borsk.common.parenthesis.OpeningParenthesis;
 import ru.borsk.lexer.token.ValidToken;
 import ru.borsk.lexer.token.impl.OperatorToken;
+import ru.borsk.lexer.token.impl.ParenthesisToken;
 import ru.borsk.lexer.token.impl.ValidNumberToken;
 import ru.borsk.parser.ParseFailureException;
 import ru.borsk.parser.Parser;
@@ -110,6 +113,30 @@ public final class ParserTest {
     testFailParse(
       new ValidNumberToken(2),
       new ValidNumberToken(3)
+    );
+  }
+
+  @Test
+  public void testExpressionWithParenthesis() {
+    // 2 * (3 + 4)
+    final BinaryOperatorNode expected = new BinaryOperatorNode(
+      new OperatorToken(MultiplicationOperator.Instance),
+      new NumberNode(new ValidNumberToken(2)),
+      new BinaryOperatorNode(
+        new OperatorToken(AdditionOperator.Instance),
+        new NumberNode(new ValidNumberToken(3)),
+        new NumberNode(new ValidNumberToken(4))
+      )
+    );
+    testParse(
+      expected,
+      new ValidNumberToken(2),
+      new OperatorToken(MultiplicationOperator.Instance),
+      new ParenthesisToken(OpeningParenthesis.Instance),
+      new ValidNumberToken(3),
+      new OperatorToken(AdditionOperator.Instance),
+      new ValidNumberToken(4),
+      new ParenthesisToken(ClosingParenthesis.Instance)
     );
   }
 }
