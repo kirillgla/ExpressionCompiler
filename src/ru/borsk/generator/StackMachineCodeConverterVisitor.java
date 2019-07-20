@@ -22,8 +22,8 @@ public final class StackMachineCodeConverterVisitor extends StackMachineCodeVisi
   public void visitOperateStackTop(final @NotNull OperateStackTop operateStackTop) {
     operateStackTop.getOperator().visit(visitor);
     builder
-      .append("  popl %eax\n")
       .append("  popl %ebx\n")
+      .append("  popl %eax\n")
       .append("  ").append(visitor.getInstruction()).append(" %ebx, %eax\n")
       .append("  pushl %eax\n");
   }
