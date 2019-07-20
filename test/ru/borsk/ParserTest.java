@@ -1,4 +1,4 @@
-package ru.borsk.lexer;
+package ru.borsk;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
