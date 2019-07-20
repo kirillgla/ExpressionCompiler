@@ -1,7 +1,11 @@
 package ru.borsk.lexer.matcher.impl;
 
 import org.jetbrains.annotations.NotNull;
-import ru.borsk.common.operator.*;
+import ru.borsk.common.operator.BinaryOperator;
+import ru.borsk.common.operator.impl.AdditionOperator;
+import ru.borsk.common.operator.impl.DivisionOperator;
+import ru.borsk.common.operator.impl.MultiplicationOperator;
+import ru.borsk.common.operator.impl.SubtractionOperator;
 import ru.borsk.lexer.matcher.Matcher;
 import ru.borsk.lexer.token.impl.OperatorToken;
 

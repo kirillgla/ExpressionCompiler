@@ -3,7 +3,7 @@ package ru.borsk.lexer;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import ru.borsk.common.operator.AdditionOperator;
+import ru.borsk.common.operator.impl.AdditionOperator;
 import ru.borsk.lexer.token.Token;
 import ru.borsk.lexer.token.impl.ErrorToken;
 import ru.borsk.lexer.token.impl.NumberToken;

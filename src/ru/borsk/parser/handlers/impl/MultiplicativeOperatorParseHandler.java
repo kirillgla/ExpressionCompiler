@@ -2,8 +2,8 @@ package ru.borsk.parser.handlers.impl;
 
 import org.jetbrains.annotations.NotNull;
 import ru.borsk.common.operator.BinaryOperator;
-import ru.borsk.common.operator.DivisionOperator;
-import ru.borsk.common.operator.MultiplicationOperator;
+import ru.borsk.common.operator.impl.DivisionOperator;
+import ru.borsk.common.operator.impl.MultiplicationOperator;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,9 @@
 package ru.borsk.parser.handlers.impl;
 
 import org.jetbrains.annotations.NotNull;
-import ru.borsk.common.operator.AdditionOperator;
 import ru.borsk.common.operator.BinaryOperator;
-import ru.borsk.common.operator.SubtractionOperator;
+import ru.borsk.common.operator.impl.AdditionOperator;
+import ru.borsk.common.operator.impl.SubtractionOperator;
 
 import java.util.ArrayList;
 import java.util.List;
