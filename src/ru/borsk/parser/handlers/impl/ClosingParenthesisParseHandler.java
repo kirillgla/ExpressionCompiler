@@ -3,16 +3,10 @@ package ru.borsk.parser.handlers.impl;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import ru.borsk.common.parenthesis.ClosingParenthesis;
-import ru.borsk.lexer.token.ValidToken;
 import ru.borsk.lexer.token.impl.ParenthesisToken;
 import ru.borsk.parser.ParseFailureException;
 
 public final class ClosingParenthesisParseHandler extends VisitorParseHandlerBase<ParenthesisToken> {
-  private ClosingParenthesisParseHandler() {
-  }
-
-  public static final ClosingParenthesisParseHandler Instance = new ClosingParenthesisParseHandler();
-
   private @Nullable ParenthesisToken token;
 
   @NotNull

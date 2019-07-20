@@ -90,11 +90,11 @@ public final class Parser extends StackLanguageProcessorBase<ValidToken> {
 
   private Node<? extends ValidToken> atom() throws ParseFailureException {
     return tryAll(
-      () -> new NumberNode(match(ValidNumberParseHandler.Instance)),
+      () -> new NumberNode(match(new ValidNumberParseHandler())),
       () -> {
-        match(OpenParenthesisParseHandler.Instance);
+        match(new OpenParenthesisParseHandler());
         final Node<? extends ValidToken> result = addend();
-        match(ClosingParenthesisParseHandler.Instance);
+        match(new ClosingParenthesisParseHandler());
         return result;
       }
     );

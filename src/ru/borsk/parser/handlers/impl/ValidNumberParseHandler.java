@@ -6,11 +6,6 @@ import ru.borsk.lexer.token.impl.ValidNumberToken;
 import ru.borsk.parser.ParseFailureException;
 
 public final class ValidNumberParseHandler extends VisitorParseHandlerBase<ValidNumberToken> {
-  private ValidNumberParseHandler() {
-  }
-
-  public static final ValidNumberParseHandler Instance = new ValidNumberParseHandler();
-
   private @Nullable ValidNumberToken token;
 
   @Override
