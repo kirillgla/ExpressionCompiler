@@ -1,6 +1,8 @@
 package ru.borsk.translator.code.impl;
 
+import org.jetbrains.annotations.NotNull;
 import ru.borsk.translator.code.StackMachineCode;
+import ru.borsk.translator.code.StackMachineCodeVisitor;
 
 import java.util.Objects;
 
@@ -13,6 +15,11 @@ public final class PushConstant implements StackMachineCode {
 
   public int getConstant() {
     return constant;
+  }
+
+  @Override
+  public void accept(final @NotNull StackMachineCodeVisitor visitor) {
+    visitor.visitPushConstant(this);
   }
 
   @Override

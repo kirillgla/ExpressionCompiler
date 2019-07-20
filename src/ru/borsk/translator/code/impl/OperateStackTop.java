@@ -3,6 +3,7 @@ package ru.borsk.translator.code.impl;
 import org.jetbrains.annotations.NotNull;
 import ru.borsk.common.operator.BinaryOperator;
 import ru.borsk.translator.code.StackMachineCode;
+import ru.borsk.translator.code.StackMachineCodeVisitor;
 
 import java.util.Objects;
 
@@ -15,6 +16,11 @@ public final class OperateStackTop implements StackMachineCode {
 
   public final @NotNull BinaryOperator getOperator() {
     return operator;
+  }
+
+  @Override
+  public void accept(final @NotNull StackMachineCodeVisitor visitor) {
+    visitor.visitOperateStackTop(this);
   }
 
   @Override
