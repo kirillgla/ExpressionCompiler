@@ -8,6 +8,6 @@ public abstract class NodeVisitor {
   public void visitBinaryOperator(final @NotNull BinaryOperatorNode binaryOperator) {
   }
 
-  public void visitNumberNode(final @NotNull NumberNode number) {
+  public void visitNumber(final @NotNull NumberNode number) {
   }
 }

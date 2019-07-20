@@ -11,6 +11,6 @@ public final class NumberNode extends NodeBase<ValidNumberToken> {
 
   @Override
   public void visit(final @NotNull NodeVisitor visitor) {
-    visitor.visitNumberNode(this);
+    visitor.visitNumber(this);
   }
 }
