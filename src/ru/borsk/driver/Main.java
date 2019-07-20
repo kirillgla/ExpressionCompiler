@@ -1,6 +1,8 @@
 package ru.borsk.driver;
 
 import org.jetbrains.annotations.NotNull;
+import ru.borsk.analyzer.StackMachineCodeAnalysisResult;
+import ru.borsk.analyzer.StackMachineCodeAnalyzer;
 import ru.borsk.generator.CodeGenerator;
 import ru.borsk.lexer.BadTokenException;
 import ru.borsk.lexer.Verifier;
@@ -62,6 +64,7 @@ public final class Main {
     final @NotNull List<@NotNull ValidToken> validTokens = new Verifier().verify(tokens);
     final Node<? extends ValidToken> tree = new Parser(validTokens).parse();
     final List<StackMachineCode> stackMachineCodes = new Translator(tree).translate();
-    return new CodeGenerator(stackMachineCodes).generate();
+    final StackMachineCodeAnalysisResult annotatedCodes = new StackMachineCodeAnalyzer(stackMachineCodes).analyze();
+    return new CodeGenerator(annotatedCodes).generate();
   }
 }
