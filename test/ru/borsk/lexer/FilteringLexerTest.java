@@ -18,7 +18,7 @@ import ru.borsk.lexer.token.impl.ParenthesisToken;
 import java.util.Arrays;
 import java.util.List;
 
-class FilteringLexerTest {
+public final class FilteringLexerTest {
   private @NotNull List<@NotNull Token> scan(final @NotNull String input) {
     return new FilteringLexer(input).scan();
   }

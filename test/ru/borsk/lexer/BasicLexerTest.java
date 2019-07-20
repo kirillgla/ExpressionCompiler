@@ -15,7 +15,7 @@ import ru.borsk.lexer.token.impl.*;
 import java.util.Arrays;
 import java.util.List;
 
-public class BasicLexerTest {
+public final class BasicLexerTest {
   private @NotNull List<@NotNull Token> scan(final @NotNull String input) {
     return new BasicLexer(input).scan();
   }

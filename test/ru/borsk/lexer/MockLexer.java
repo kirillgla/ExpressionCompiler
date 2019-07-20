@@ -5,7 +5,7 @@ import ru.borsk.lexer.token.Token;
 
 import java.util.List;
 
-public class MockLexer implements Lexer {
+public final class MockLexer implements Lexer {
   private final @NotNull List<@NotNull Token> tokens;
 
   public MockLexer(final @NotNull List<@NotNull Token> tokens) {

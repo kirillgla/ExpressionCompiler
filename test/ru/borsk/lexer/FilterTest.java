@@ -16,7 +16,7 @@ import ru.borsk.lexer.token.impl.WhitespaceToken;
 import java.util.Arrays;
 import java.util.List;
 
-class FilterTest {
+public final class FilterTest {
   private @NotNull List<@NotNull Token> filter(final @NotNull List<@NotNull Token> tokens) {
     return new FilteringLexer(new MockLexer(tokens)).scan();
   }

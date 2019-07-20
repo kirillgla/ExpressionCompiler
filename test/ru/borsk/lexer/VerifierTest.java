@@ -11,7 +11,7 @@ import ru.borsk.lexer.token.impl.OperatorToken;
 
 import java.util.Arrays;
 
-public class VerifierTest {
+public final class VerifierTest {
   private Verifier verifier = new Verifier();
 
   private void assertSuccess(final @NotNull Token... tokens) {

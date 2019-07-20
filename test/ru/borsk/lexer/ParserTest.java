@@ -15,7 +15,7 @@ import ru.borsk.parser.node.impl.NumberNode;
 
 import java.util.Arrays;
 
-public class ParserTest {
+public final class ParserTest {
   private void testFailParse(final @NotNull ValidToken... tokens) {
     Assertions.assertThrows(ParseFailureException.class, () -> new Parser(Arrays.asList(tokens)).parse());
   }
