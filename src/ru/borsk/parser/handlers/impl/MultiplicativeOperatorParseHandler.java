@@ -16,9 +16,7 @@ public final class MultiplicativeOperatorParseHandler extends OperatorParseHandl
     acceptedOperators.add(DivisionOperator.Instance);
   }
 
-  private MultiplicativeOperatorParseHandler() {
+  public MultiplicativeOperatorParseHandler() {
     super(acceptedOperators);
   }
-
-  public static final MultiplicativeOperatorParseHandler Instance = new MultiplicativeOperatorParseHandler();
 }

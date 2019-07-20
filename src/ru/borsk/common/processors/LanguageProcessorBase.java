@@ -4,12 +4,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public abstract class LanguageProcessorBase<T> {
-  private final @NotNull List<@NotNull T> elements;
+public abstract class LanguageProcessorBase<TInput> {
+  private final @NotNull List<@NotNull TInput> elements;
   private int lookaheadIndex;
   private int savedLookaheadIndex;
 
-  public LanguageProcessorBase(final @NotNull List<@NotNull T> elements) {
+  public LanguageProcessorBase(final @NotNull List<@NotNull TInput> elements) {
     this.elements = elements;
     lookaheadIndex = 0;
   }
@@ -30,7 +30,7 @@ public abstract class LanguageProcessorBase<T> {
     lookaheadIndex = savedLookaheadIndex;
   }
 
-  protected final T getLookahead() {
+  protected final TInput getLookahead() {
     return elements.get(lookaheadIndex);
   }
 

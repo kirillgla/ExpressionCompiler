@@ -19,18 +19,22 @@ public final class Parser extends StackLanguageProcessorBase<ValidToken> {
   }
 
   public @NotNull Node<? extends ValidToken> parse() throws ParseFailureException {
-    return addend();
+    final Node<? extends ValidToken> result = addend();
+    throwIfNotCompleted();
+    return result;
   }
 
   private @NotNull Node<? extends ValidToken> addend() throws ParseFailureException {
     final Node<? extends ValidToken> factor = factor();
     stackSaveLookaheadIndex();
     try {
-      final OperatorToken operator = match(AdditiveOperatorParseHandler.Instance);
+      final OperatorToken operator = match(new AdditiveOperatorParseHandler());
       return addend(factor, operator);
     } catch (ParseFailureException e) {
       stackRestoreLookaheadIndex();
       return factor;
+    } finally {
+      stackPopLookaheadIndex();
     }
   }
 
@@ -42,11 +46,13 @@ public final class Parser extends StackLanguageProcessorBase<ValidToken> {
     final BinaryOperatorNode newNode = new BinaryOperatorNode(operator, node, factor);
     stackSaveLookaheadIndex();
     try {
-      final OperatorToken newOperator = match(AdditiveOperatorParseHandler.Instance);
+      final OperatorToken newOperator = match(new AdditiveOperatorParseHandler());
       return addend(newNode, newOperator);
     } catch (ParseFailureException e) {
       stackRestoreLookaheadIndex();
       return newNode;
+    } finally {
+      stackPopLookaheadIndex();
     }
   }
 
@@ -54,11 +60,13 @@ public final class Parser extends StackLanguageProcessorBase<ValidToken> {
     final Node<? extends ValidToken> atom = atom();
     stackSaveLookaheadIndex();
     try {
-      final OperatorToken operator = match(MultiplicativeOperatorParseHandler.Instance);
+      final OperatorToken operator = match(new MultiplicativeOperatorParseHandler());
       return factor(atom, operator);
     } catch (ParseFailureException e) {
-      restoreLookaheadIndex();
+      stackRestoreLookaheadIndex();
       return atom;
+    } finally {
+      stackPopLookaheadIndex();
     }
   }
 
@@ -70,11 +78,13 @@ public final class Parser extends StackLanguageProcessorBase<ValidToken> {
     final BinaryOperatorNode newNode = new BinaryOperatorNode(operator, node, atom);
     stackSaveLookaheadIndex();
     try {
-      final OperatorToken newOperator = match(MultiplicativeOperatorParseHandler.Instance);
+      final OperatorToken newOperator = match(new MultiplicativeOperatorParseHandler());
       return factor(newNode, newOperator);
     } catch (ParseFailureException e) {
       stackRestoreLookaheadIndex();
       return newNode;
+    } finally {
+      stackPopLookaheadIndex();
     }
   }
 
@@ -103,11 +113,13 @@ public final class Parser extends StackLanguageProcessorBase<ValidToken> {
         stackRestoreLookaheadIndex();
       }
     }
+    stackPopLookaheadIndex();
     throw new ParseFailureException();
   }
 
   private <TResult> TResult match(final @NotNull ParseHandler<TResult> handler)
     throws ParseFailureException {
+    if (!canContinue()) throw new ParseFailureException();
     final @NotNull ValidToken lookahead = getLookahead();
     final TResult result = handler.consume(lookahead);
     advance();

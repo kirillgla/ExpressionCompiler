@@ -1,6 +1,7 @@
 package ru.borsk.common.processors;
 
 import org.jetbrains.annotations.NotNull;
+import ru.borsk.parser.ParseFailureException;
 
 import java.util.List;
 import java.util.Stack;
@@ -10,6 +11,10 @@ public abstract class StackLanguageProcessorBase<T> extends LanguageProcessorBas
 
   public StackLanguageProcessorBase(final @NotNull List<@NotNull T> elements) {
     super(elements);
+  }
+
+  protected final void throwIfNotCompleted() throws ParseFailureException {
+    if (canContinue()) throw new ParseFailureException();
   }
 
   protected final void stackSaveLookaheadIndex() {

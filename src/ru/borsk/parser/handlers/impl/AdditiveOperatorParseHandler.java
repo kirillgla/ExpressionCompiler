@@ -16,9 +16,7 @@ public final class AdditiveOperatorParseHandler extends OperatorParseHandlerBase
     acceptedOperators.add(SubtractionOperator.Instance);
   }
 
-  private AdditiveOperatorParseHandler() {
+  public AdditiveOperatorParseHandler() {
     super(acceptedOperators);
   }
-
-  public static final AdditiveOperatorParseHandler Instance = new AdditiveOperatorParseHandler();
 }
