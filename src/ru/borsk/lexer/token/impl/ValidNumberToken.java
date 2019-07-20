@@ -11,7 +11,7 @@ public final class ValidNumberToken implements ValidToken {
     this.number = number;
   }
 
-  private int getNumber() {
+  public int getNumber() {
     return number;
   }
 
