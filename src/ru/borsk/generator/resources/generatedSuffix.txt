@@ -1,3 +1,5 @@
+  pushl $LC0
+  call _printf
   movl	$0, %eax
   leave
   ret

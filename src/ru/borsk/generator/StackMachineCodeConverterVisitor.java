@@ -15,7 +15,7 @@ public final class StackMachineCodeConverterVisitor extends StackMachineCodeVisi
 
   @Override
   public void visitPushConstant(final @NotNull PushConstant pushConstant) {
-    builder.append("  pushl ").append(pushConstant.getConstant()).append("\n");
+    builder.append("  pushl $").append(pushConstant.getConstant()).append("\n");
   }
 
   @Override
@@ -24,7 +24,7 @@ public final class StackMachineCodeConverterVisitor extends StackMachineCodeVisi
     builder
       .append("  popl %eax\n")
       .append("  popl %ebx\n")
-      .append("  ").append(visitor.getInstruction()).append(" %ebx %eax\n")
+      .append("  ").append(visitor.getInstruction()).append(" %ebx, %eax\n")
       .append("  pushl %eax\n");
   }
 }
